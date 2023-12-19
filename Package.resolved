@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire",
+      "state" : {
+        "revision" : "3dc6a42c7727c49bf26508e29b0a0b35f9c7e1ad",
+        "version" : "5.8.1"
+      }
+    },
+    {
+      "identity" : "foundationx",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Lguanghui/FoundationX.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "c270361bf0f3a872ae6e780d08df190cc4114306"
+      }
+    }
+  ],
+  "version" : 2
+}
