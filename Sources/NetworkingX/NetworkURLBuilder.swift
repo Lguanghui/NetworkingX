@@ -8,9 +8,9 @@
 
 import Foundation
 
-/// the propertyWrapper for quickly build a request URL.
+/// The propertyWrapper for quickly build a request URL.
 ///
-/// #Example#
+/// Example:
 ///
 ///     @NetworkURLBuilder(path: "basePath/path") var url: URL
 ///     let response = await AF.request(url, method: .post, parameters: getParams(withText: text), encoding: JSONEncoding.default)
@@ -20,23 +20,36 @@ import Foundation
 ///     // or:
 ///     @NetworkURLBuilder(path: "basePath/path", host: "www.apple.com", scheme: "https") var url: URL
 ///
-/// #Note#
+/// Note:
 ///
 /// - `path` is required.
 /// - `host`, `scheme`, and `port` are optional when initializing. If you don‘t specify them along with the path when initializing the URLs, they will use the default ones in NetworkConfig.
 @propertyWrapper
 public struct NetworkURLBuilder {
-    public var wrappedValue: URL
     
+    public var wrappedValue: URL {
+        get {
+            var components = URLComponents()
+            components.scheme = scheme ?? NetworkConfig.shared.scheme
+            components.host = host ?? NetworkConfig.shared.host
+            components.path = path.hasPrefix("/") ? path : "/\(path)"
+            components.port = port
+            return components.url ?? NetworkConfig.shared.defaultURL
+        }
+    }
     
+    private var path: String
     
-    public init(path: String, host: String = NetworkConfig.shared.host, scheme: String? = NetworkConfig.shared.scheme, port: Int? = NetworkConfig.shared.port) {
-        var components = URLComponents()
-        components.scheme = scheme
-        components.host = host
-        components.path = path.hasPrefix("/") ? path : "/\(path)"
-        components.port = port
-        
-        wrappedValue = components.url ?? NetworkConfig.shared.defaultURL
+    private var host: String?
+    
+    private var scheme: String?
+    
+    private var port: Int?
+    
+    public init(path: String, host: String? = nil, scheme: String? = nil, port: Int? = nil) {
+        self.host = host
+        self.scheme = scheme
+        self.port = port
+        self.path = path
     }
 }

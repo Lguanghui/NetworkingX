@@ -6,9 +6,7 @@
 //  Copyright © 2023 Guanghui Liang. All rights reserved.
 //
 
-import Cocoa
-
-fileprivate let DEFAULT_API: String = "api.liangguanghui.site"
+import Foundation
 
 public final class NetworkConfig: ObservableObject {
     
@@ -18,7 +16,7 @@ public final class NetworkConfig: ObservableObject {
     
     public static let shared: NetworkConfig = NetworkConfig()
     
-    public var defaultURL: URL = URL(string: DEFAULT_API)!
+    public var defaultURL: URL = URL(string: "www.apple.com")!
     
     @Published
     public private(set) var host: String = ""
