@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import FoundationX
 
 /// The propertyWrapper for quickly build a request URL.
 ///
@@ -30,10 +31,16 @@ public struct NetworkURLBuilder {
     public var wrappedValue: URL {
         get {
             var components = URLComponents()
-            components.scheme = scheme ?? NetworkConfig.shared.scheme
+            let scheme = scheme == .none ? NetworkConfig.shared.scheme : scheme
+            components.scheme = if case let Value<String>.some(wrapped) = scheme {
+                wrapped
+            } else { "" }
             components.host = host ?? NetworkConfig.shared.host
             components.path = path.hasPrefix("/") ? path : "/\(path)"
-            components.port = port
+            let port = port == .none ? NetworkConfig.shared.port : port
+            components.port = if case let Value<Int>.some(value) = port {
+                value
+            } else { nil }
             return components.url ?? NetworkConfig.shared.defaultURL
         }
     }
@@ -42,11 +49,11 @@ public struct NetworkURLBuilder {
     
     private var host: String?
     
-    private var scheme: String?
+    private var scheme: Value<String>
     
-    private var port: Int?
+    private var port: Value<Int>
     
-    public init(path: String, host: String? = nil, scheme: String? = nil, port: Int? = nil) {
+    public init(path: String, host: String? = nil, scheme: Value<String> = .none, port: Value<Int> = .none) {
         self.host = host
         self.scheme = scheme
         self.port = port
