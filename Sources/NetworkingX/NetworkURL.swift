@@ -1,5 +1,5 @@
 //
-//  NetworkURLBuilder.swift
+//  NetworkURL.swift
 //  NetworkingX
 //
 //  Created by 梁光辉 on 2023/12/17.
@@ -9,24 +9,24 @@
 import Foundation
 import FoundationX
 
-/// The propertyWrapper for quickly build a request URL.
+/// The property wrapper for quickly building a request URL.
 ///
 /// Example:
 ///
-///     @NetworkURLBuilder(path: "basePath/path") var url: URL
+///     @NetworkURL(path: "basePath/path") var url: URL
 ///     let response = await AF.request(url, method: .post, parameters: getParams(withText: text), encoding: JSONEncoding.default)
 ///                            .serializingDecodable(BaseResponseModel<ResultModel>.self)
 ///                            .response
 ///
 ///     // or:
-///     @NetworkURLBuilder(path: "basePath/path", host: "www.apple.com", scheme: "https") var url: URL
+///     @NetworkURL(path: "basePath/path", host: "www.apple.com", scheme: "https") var url: URL
 ///
 /// Note:
 ///
 /// - `path` is required.
 /// - `host`, `scheme`, and `port` are optional when initializing. If you don‘t specify them along with the path when initializing the URLs, they will use the default ones in NetworkConfig.
 @propertyWrapper
-public struct NetworkURLBuilder {
+public struct NetworkURL {
     
     public var wrappedValue: URL {
         get {
