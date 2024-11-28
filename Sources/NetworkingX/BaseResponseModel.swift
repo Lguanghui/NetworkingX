@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct BaseResponseModel<DataType: Codable>: Codable {
+public struct BaseResponseModel<DataType: Codable & Sendable>: Codable, Sendable {
     public let code: Int
     public let message: String
     public let data: DataType
