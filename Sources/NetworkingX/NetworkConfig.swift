@@ -29,14 +29,14 @@ public final class NetworkConfig: ObservableObject {
     @Published
     public private(set) var host: String = ""
     
-    public private(set) var scheme: Value<String> = .some(value: "https")
+    public private(set) var scheme: NetworkURL.SchemeType = .https
     
     public private(set) var port: Value<Int> = .none
     
     public private(set) var commonHeaders: HTTPHeaders = .default
     
     /// update current network config. **It is recommended to call it before rendering the view**
-    public func updateConfig(host: String, scheme: Value<String> = .some(value: "https"), port: Value<Int> = .none) {
+    public func updateConfig(host: String, scheme: NetworkURL.SchemeType = .https, port: Value<Int> = .none) {
         self.host = host
         self.scheme = scheme
         self.port = port

@@ -28,13 +28,31 @@ import FoundationX
 @propertyWrapper
 public struct NetworkURL {
     
+    public enum SchemeType {
+        case http
+        case https
+        case none
+        case custom(scheme: String)
+        
+        fileprivate func schemeValue() -> String {
+            switch self {
+            case .http:
+                return "http"
+            case .https:
+                return "https"
+            case .none:
+                return ""
+            case .custom(let scheme):
+                return scheme
+            }
+        }
+    }
+    
     public var wrappedValue: URL {
         get {
             var components = URLComponents()
-            let scheme = scheme == .none ? NetworkConfig.shared.scheme : scheme
-            components.scheme = if case let Value<String>.some(wrapped) = scheme {
-                wrapped
-            } else { "" }
+            let scheme = scheme.isEmpty ? NetworkConfig.shared.scheme.schemeValue() : scheme
+            components.scheme = scheme
             components.host = host ?? NetworkConfig.shared.host
             components.path = path.hasPrefix("/") ? path : "/\(path)"
             let port = port == .none ? NetworkConfig.shared.port : port
@@ -49,13 +67,13 @@ public struct NetworkURL {
     
     private var host: String?
     
-    private var scheme: Value<String>
+    private var scheme: String
     
     private var port: Value<Int>
     
-    public init(path: String, host: String? = nil, scheme: Value<String> = .none, port: Value<Int> = .none) {
+    public init(path: String, host: String? = nil, scheme: SchemeType = .https, port: Value<Int> = .none) {
         self.host = host
-        self.scheme = scheme
+        self.scheme = scheme.schemeValue()
         self.port = port
         self.path = path
     }

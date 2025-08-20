@@ -7,9 +7,10 @@
 //
 
 import Foundation
+import FoundationX
 
 public struct BaseResponseModel<DataType: Codable & Sendable>: Codable, Sendable {
-    public let code: Int
-    public let message: String
-    public let data: DataType
+    @DefaultIntZero public var code: Int
+    @DefaultEmptyString public var message: String
+    public let data: DataType?
 }
