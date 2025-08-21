@@ -19,12 +19,12 @@ import FoundationX
 ///                            .response
 ///
 ///     // or:
-///     @NetworkURL(path: "basePath/path", host: "www.apple.com", scheme: "https") var url: URL
+///     @NetworkURL(path: "basePath/path", host: "www.apple.com", scheme: .https) var url: URL
 ///
 /// Note:
 ///
 /// - `path` is required.
-/// - `host`, `scheme`, and `port` are optional when initializing. If you don‘t specify them along with the path when initializing the URLs, they will use the default ones in NetworkConfig.
+/// - `host`, `scheme`, and `port` are optional when initializing. If you don‘t specify them along with the path when initializing the URL, they will default to the values in NetworkConfig.
 @propertyWrapper
 public struct NetworkURL {
     
