@@ -31,12 +31,12 @@ public final class NetworkConfig: ObservableObject {
     
     public private(set) var scheme: NetworkURL.SchemeType = .https
     
-    public private(set) var port: Value<Int> = .none
+    public private(set) var port: NetworkURL.PortValue = .none
     
     public private(set) var commonHeaders: HTTPHeaders = .default
     
     /// update current network config. **It is recommended to call it before rendering the view**
-    public func updateConfig(host: String, scheme: NetworkURL.SchemeType = .https, port: Value<Int> = .none) {
+    public func updateConfig(host: String, scheme: NetworkURL.SchemeType = .https, port: NetworkURL.PortValue = .none) {
         self.host = host
         self.scheme = scheme
         self.port = port

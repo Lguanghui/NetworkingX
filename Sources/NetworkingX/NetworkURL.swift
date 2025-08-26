@@ -24,7 +24,7 @@ import FoundationX
 /// Note:
 ///
 /// - `path` is required.
-/// - `host`, `scheme`, and `port` are optional when initializing. If you don‘t specify them along with the path when initializing the URL, they will default to the values in NetworkConfig.
+/// - `host`, `scheme`, and `port` are optional when initializing. If you don‘t specify them along with the path when initializing the URLs, they will use the default ones in NetworkConfig or `nil`.
 @propertyWrapper
 public struct NetworkURL {
     
@@ -48,6 +48,23 @@ public struct NetworkURL {
         }
     }
     
+    public enum PortValue {
+        case none
+        case defaultConfig
+        case custom(port: Int)
+        
+        fileprivate func portValue() -> Int? {
+            switch self {
+            case .none:
+                return nil
+            case .defaultConfig:
+                return NetworkConfig.shared.port.portValue()
+            case .custom(let port):
+                return port
+            }
+        }
+    }
+    
     public var wrappedValue: URL {
         get {
             var components = URLComponents()
@@ -55,10 +72,7 @@ public struct NetworkURL {
             components.scheme = scheme
             components.host = host ?? NetworkConfig.shared.host
             components.path = path.hasPrefix("/") ? path : "/\(path)"
-            let port = port == .none ? NetworkConfig.shared.port : port
-            components.port = if case let Value<Int>.some(value) = port {
-                value
-            } else { nil }
+            components.port = port.portValue()
             return components.url ?? NetworkConfig.shared.defaultURL
         }
     }
@@ -69,9 +83,9 @@ public struct NetworkURL {
     
     private var scheme: String
     
-    private var port: Value<Int>
+    private var port: PortValue
     
-    public init(path: String, host: String? = nil, scheme: SchemeType = .https, port: Value<Int> = .none) {
+    public init(path: String, host: String? = nil, scheme: SchemeType = .https, port: PortValue = .none) {
         self.host = host
         self.scheme = scheme.schemeValue()
         self.port = port
