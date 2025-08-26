@@ -16,7 +16,8 @@ public extension Alamofire.HTTPHeaders {
     }
 }
 
-public final class NetworkConfig: ObservableObject {
+@preconcurrency
+public final class NetworkConfig: ObservableObject, @unchecked Sendable {
     
     private init() {
         
