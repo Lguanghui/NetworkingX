@@ -85,7 +85,7 @@ public struct NetworkURL {
     
     private var port: PortValue
     
-    public init(path: String, host: String? = nil, scheme: SchemeType = .https, port: PortValue = .none) {
+    public init(path: String, host: String? = nil, scheme: SchemeType = .none, port: PortValue = .none) {
         self.host = host
         self.scheme = scheme.schemeValue()
         self.port = port
